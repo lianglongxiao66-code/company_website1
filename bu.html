@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>魔法小人抓Bug</title>
+    <style>
+        body{background:#e0f7fa;text-align:center;font-family:卡通字体,sans-serif;}
+        #game{width:800px;height:500px;background:#fff;margin:20px auto;border-radius:12px;position:relative;overflow:hidden;}
+        #player{width:60px;height:60px;background:#ffd700;border-radius:50%;position:absolute;top:220px;left:50px;font-size:30px;line-height:60px;}
+        #bug1,#bug2,#bug3{width:40px;height:40px;background:#8b4513;border-radius:50%;position:absolute;font-size:20px;line-height:40px;color:#fff;}
+        #bug1{top:220px;left:200px;}
+        #bug2{top:220px;left:350px;}
+        #bug3{top:220px;left:500px;}
+        #candy{width:60px;height:60px;background:#ff69b4;border-radius:50%;position:absolute;top:220px;left:700px;font-size:30px;line-height:60px;}
+        .btn{padding:15px 30px;font-size:20px;margin:10px;border:none;border-radius:8px;background:#4CAF50;color:white;cursor:pointer;}
+        .btn:active{transform:scale(0.95);}
+        #tip{font-size:24px;color:#333;margin:20px;}
+        .firework{position:absolute;width:10px;height:10px;background:#ff0;border-radius:50%;animation:fire 1s ease-out forwards;}
+        @keyframes fire{0%{transform:scale(0);opacity:1;}100%{transform:scale(20);opacity:0;}}
+    </style>
+</head>
+<body>
+    <h1>魔法小人走迷宫·抓Bug</h1>
+    <div id="game">
+        <div id="player">😊</div>
+        <div id="bug1">🐛</div>
+        <div id="bug2">🐛</div>
+        <div id="bug3">🐛</div>
+        <div id="candy">🍬</div>
+    </div>
+    <div id="tip">请帮小人下指令，走到糖果！</div>
+    <button class="btn" onclick="moveRight()">向右走3步</button>
+    <button class="btn" onclick="stepBug()">踩虫子</button>
+    <button class="btn" onclick="reset()">重新开始</button>
+
+    <script>
+        let player=document.getElementById('player');
+        let bug1=document.getElementById('bug1');
+        let bug2=document.getElementById('bug2');
+        let bug3=document.getElementById('bug3');
+        let candy=document.getElementById('candy');
+        let tip=document.getElementById('tip');
+        let pos=50;
+
+        function moveRight(){
+            pos += 100;
+            player.style.left=pos+'px';
+            if(pos >= 700){
+                tip.innerText='太棒啦！吃到糖果，烟花庆祝！';
+                createFirework();
+            }else if(pos === 200 || pos === 350 || pos === 500){
+                tip.innerText='哎呀！碰到Bug啦，快踩掉它！';
+            }else{
+                tip.innerText='继续走，前面有Bug！';
+            }
+        }
+
+        function stepBug(){
+            if(pos === 200) bug1.style.display='none';
+            if(pos === 350) bug2.style.display='none';
+            if(pos === 500) bug3.style.display='none';
+            tip.innerText='虫子被踩掉啦！继续前进！';
+        }
+
+        function reset(){
+            pos=50;
+            player.style.left='50px';
+            bug1.style.display='block';
+            bug2.style.display='block';
+            bug3.style.display='block';
+            tip.innerText='请帮小人下指令，走到糖果！';
+        }
+
+        function createFirework(){
+            for(let i=0;i<50;i++){
+                let fire=document.createElement('div');
+                fire.className='firework';
+                fire.style.left=Math.random()*800+'px';
+                fire.style.top=Math.random()*500+'px';
+                document.getElementById('game').appendChild(fire);
+                setTimeout(()=>fire.remove(),1000);
+            }
+        }
+    </script>
+</body>
+</html>
